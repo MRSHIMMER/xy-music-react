@@ -1,25 +1,24 @@
 import React, { memo } from "react";
+import { Route, Routes } from "react-router-dom";
+
 import AppHeader from "@/components/app-header";
 import AppFooter from "@/components/app-footer";
-import { useRoutes, Link } from "react-router-dom";
+import Discover from "./pages/discover";
+import Friend from "./pages/friend";
+import Mine from "./pages/mine";
 
 export default memo(function App() {
-	let element = useRoutes([
-		{
-			path: "/test",
-			element: <Home />,
-		},
-	]);
-	return (
-		<div>
-			<AppHeader />
-			<h2>App test5</h2>
-			<Link to="test">跳转</Link>
-			{element}
-			<AppFooter />
-		</div>
-	);
+  return (
+    <div>
+      <AppHeader />
+      <Routes>
+        {/* <Route path="/" element={<Navigate to="/discover" />} /> */}
+        <Route path="/" element={<Discover />} />
+        <Route path="/discover" element={<Discover />} />
+        <Route path="/friend" element={<Friend />} />
+        <Route path="/mine" element={<Mine />} />
+      </Routes>
+      <AppFooter />
+    </div>
+  );
 });
-function Home() {
-	return <div>Home</div>;
-}
