@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import store from "./store";
+import { Provider } from "react-redux";
+import App from "./App";
 import Discover from "./pages/discover";
 import Friend from "./pages/friend";
 import Mine from "./pages/mine";
@@ -24,22 +26,24 @@ import "@/asserts/css/reset.css";
 // );
 
 ReactDOM.render(
-	<BrowserRouter>
-		<Routes>
-			<Route path="/" element={<App />}>
-				<Route path="discover" element={<Discover />}>
-					<Route index element={<Recommend />} />
-					<Route path="ranking" element={<Ranking />} />
-					<Route path="djradio" element={<Djradio />} />
-					<Route path="artist" element={<Artist />} />
-					<Route path="album" element={<Album />} />
-					<Route path="songs" element={<Song />} />
-				</Route>
+	<Provider store={store}>
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<App />}>
+					<Route path="discover" element={<Discover />}>
+						<Route index element={<Recommend />} />
+						<Route path="ranking" element={<Ranking />} />
+						<Route path="djradio" element={<Djradio />} />
+						<Route path="artist" element={<Artist />} />
+						<Route path="album" element={<Album />} />
+						<Route path="songs" element={<Song />} />
+					</Route>
 
-				<Route path="friend" element={<Friend />} />
-				<Route path="mine" element={<Mine />} />
-			</Route>
-		</Routes>
-	</BrowserRouter>,
+					<Route path="friend" element={<Friend />} />
+					<Route path="mine" element={<Mine />} />
+				</Route>
+			</Routes>
+		</BrowserRouter>
+	</Provider>,
 	document.getElementById("root")
 );

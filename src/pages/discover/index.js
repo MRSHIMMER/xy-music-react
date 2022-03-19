@@ -1,19 +1,11 @@
-import React, { memo, useEffect } from "react";
+import React, { memo } from "react";
 
 import { dicoverMenu } from "@/common/local-data";
-import request from "@/services/request";
 
 import { NavLink, Outlet } from "react-router-dom";
 import { DiscoverWrapper, TopMenu } from "./style";
 
 const Discover = memo(() => {
-	useEffect(() => {
-		request({
-			url: "banner",
-		}).then((res) => {
-			console.log(res);
-		});
-	}, []);
 	return (
 		<DiscoverWrapper>
 			<div className="top">
