@@ -15,7 +15,7 @@ import Artist from "./pages/discover/c-pages/artist";
 import Album from "./pages/discover/c-pages/album";
 import Song from "./pages/discover/c-pages/songs";
 // import "normalize.css";
-import "@/asserts/css/reset.css";
+import "@/assets/css/reset.css";
 // import "antd/dist/antd.css";
 
 // ReactDOM.render(

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getTopBanners } from "@/services/recommend";
+// import { getTopBanners } from "@/services/recommend";
 import request from "@/services/request";
 
-let banners = getTopBanners();
+// let banners = getTopBanners();
 const initialState = {
-	recommend: [],
+	topBanners: [],
 	status: "idle",
 	error: null,
 };
@@ -16,7 +16,7 @@ export const fetchRecommend = createAsyncThunk(
 		const response = await request({
 			url: "/banner",
 		});
-		return response;
+		return response.banners;
 	}
 );
 
@@ -30,7 +30,7 @@ const recommendSlice = createSlice({
 		},
 		[fetchRecommend.fulfilled]: (state, action) => {
 			state.status = "succeeded";
-			state.recommend = state.recommend.concat(action.payload.banners);
+			state.topBanners = state.topBanners.concat(action.payload);
 		},
 		[fetchRecommend.rejected]: (state, action) => {
 			state.status = "failed";
@@ -40,3 +40,4 @@ const recommendSlice = createSlice({
 });
 
 export default recommendSlice.reducer;
+export const selectTopBanners = (state) => state.recommend.topBanners;
