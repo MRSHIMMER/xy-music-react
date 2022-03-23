@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// import { getTopBanners } from "@/services/recommend";
-import request from "@/services/request";
+import { getTopBanners } from "@/services/recommend";
+// import request from "@/services/request";
 
-// let banners = getTopBanners();
 const initialState = {
 	topBanners: [],
 	status: "idle",
@@ -13,9 +12,7 @@ const initialState = {
 export const fetchRecommend = createAsyncThunk(
 	"recommend/fetchRecommend",
 	async () => {
-		const response = await request({
-			url: "/banner",
-		});
+		const response = await getTopBanners();
 		return response.banners;
 	}
 );

@@ -49,7 +49,7 @@ export const FooterRight = styled.ul`
 			width: 50px;
 			height: 45px;
 
-			background-image: url(${require("../../assets/img/sprite_footer_02.png")});
+			background-image: url(${require("@/assets/img/sprite_footer_02.png")});
 			background-size: 110px 450px;
 		}
 
