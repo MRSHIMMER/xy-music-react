@@ -15,6 +15,7 @@ export const fetchRanking = createAsyncThunk("ranking/fetchRanking", async () =>
 	const newsongRankingTemp = await getTopList(NEWSONG_RANKING_ID);
 	const originalRankingTemp = await getTopList(ORIGINAL_RANKING_ID);
 
+	//需改进
 	soarRankingTemp.playlist.tracks = soarRankingTemp.playlist.tracks.splice(0, 10);
 	newsongRankingTemp.playlist.tracks = newsongRankingTemp.playlist.tracks.splice(0, 10);
 	originalRankingTemp.playlist.tracks = originalRankingTemp.playlist.tracks.splice(0, 10);

@@ -3,6 +3,7 @@ import recommendReducer from "@/pages/discover/c-pages/recommend/top-banner/reco
 import hotRecommendReducer from "@/pages/discover/c-pages/recommend/hot-recommend/hotRecommendSlice";
 import newAlbumReducer from "@/pages/discover/c-pages/recommend/new-album/newAlbumSlice";
 import rankingReducer from "@/pages/discover/c-pages/recommend/recommend-ranking/rankingSlice";
+import playerReducer from "@/pages/player/app-player-bar/playerSlice";
 
 export default configureStore({
 	reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
 		hotRecommend: hotRecommendReducer,
 		newAlbum: newAlbumReducer,
 		ranking: rankingReducer,
+		player: playerReducer,
 	},
 });

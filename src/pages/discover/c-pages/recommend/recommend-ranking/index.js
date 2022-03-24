@@ -15,9 +15,7 @@ const RecommendRanking = memo(() => {
 	const { soarRanking, newsongRanking, originalRanking } = ranking;
 
 	// console.log(originalRanking);
-
-	// console.log(originalRanking.name);
-	// console.log(originalRanking.tracks);
+	// console.log(originalRanking.creator.avatarDetail.userType);
 
 	useEffect(() => {
 		if (rankingStatus === "idle") dispatch(fetchRanking());
