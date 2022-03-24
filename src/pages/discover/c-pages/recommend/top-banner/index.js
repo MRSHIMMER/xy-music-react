@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchRecommend, selectTopBanners } from "../recommendSlice";
+import { fetchRecommend, selectTopBanners } from "./recommendSlice";
 
 import { Carousel } from "antd";
 import { BannerWrapper, BannerLeft, BannerRight, BannerControl } from "./style";

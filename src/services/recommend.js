@@ -15,8 +15,20 @@ export function getHotRecommends(limit) {
 	});
 }
 
-export function getNewAlbum() {
+export function getNewAlbums(limit) {
 	return request({
 		url: "/top/album",
+		params: {
+			limit,
+		},
+	});
+}
+
+export function getTopList(id) {
+	return request({
+		url: "/playlist/detail",
+		params: {
+			id,
+		},
 	});
 }
