@@ -1,18 +1,22 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getSizeImage } from "@/utils/format-utils";
+import { getSizeImage, formatDate, getPlaySong } from "@/utils/format-utils";
+
 import { fetchPlayer, selectCurrentSong } from "./playerSlice";
 import { Slider } from "antd";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 
 const AppPlayerBar = memo(() => {
+	const [currentTime, setCurrentTime] = useState(0);
+
 	const dispatch = useDispatch();
 	const currentSong = useSelector(selectCurrentSong);
 	const currentSongStatus = useSelector((state) => state.player.status);
 
 	// console.log(currentSong);
 
+	const audioRef = useRef();
 	useEffect(() => {
 		if (currentSongStatus === "idle") dispatch(fetchPlayer());
 	}, [currentSongStatus, dispatch]);
@@ -20,13 +24,26 @@ const AppPlayerBar = memo(() => {
 	// 赋值技巧
 	const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
 	const singerName = (currentSong.ar && currentSong.ar[0].name) || "未知歌手";
+	const duration = currentSong.dt || 0;
+	const showDuration = formatDate(duration, "mm:ss");
+	const shoeCurrentTime = formatDate(currentTime, "mm:ss");
+	const progress = (currentTime / duration) * 100;
+
+	const playMusic = () => {
+		audioRef.current.src = getPlaySong(currentSong.id);
+		audioRef.current.play();
+	};
+
+	const timeUpdate = (e) => {
+		setCurrentTime(e.target.currentTime * 1000);
+	};
 
 	return (
 		<PlaybarWrapper className="sprite_player">
 			<div className="content wrap-v2">
 				<Control>
 					<button className="sprite_player prev"></button>
-					<button className="sprite_player play"></button>
+					<button className="sprite_player play" onClick={(e) => playMusic()}></button>
 					<button className="sprite_player next"></button>
 				</Control>
 				<PlayInfo>
@@ -43,11 +60,11 @@ const AppPlayerBar = memo(() => {
 							</a>
 						</div>
 						<div className="progress">
-							<Slider defaultValue={30} />
+							<Slider defaultValue={30} value={progress} />
 							<div className="time">
-								<span className="now-time">02:30</span>
+								<span className="now-time">{shoeCurrentTime}</span>
 								<span className="divider"></span>
-								<span className="duration">04:22</span>
+								<span className="duration">{showDuration}</span>
 							</div>
 						</div>
 					</div>
@@ -64,6 +81,7 @@ const AppPlayerBar = memo(() => {
 					</div>
 				</Operator>
 			</div>
+			<audio ref={audioRef} src="" onTimeUpdate={timeUpdate} />
 		</PlaybarWrapper>
 	);
 });
