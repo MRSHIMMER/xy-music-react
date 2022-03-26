@@ -14,6 +14,7 @@ import Djradio from "./pages/discover/c-pages/djradio";
 import Artist from "./pages/discover/c-pages/artist";
 import Album from "./pages/discover/c-pages/album";
 import Song from "./pages/discover/c-pages/songs";
+import Player from "./pages/player";
 // import "normalize.css";
 import "@/assets/css/reset.css";
 // import "antd/dist/antd.css";
@@ -37,6 +38,7 @@ ReactDOM.render(
 						<Route path="artist" element={<Artist />} />
 						<Route path="album" element={<Album />} />
 						<Route path="songs" element={<Song />} />
+						<Route path="player" element={<Player />} />
 					</Route>
 
 					<Route path="friend" element={<Friend />} />

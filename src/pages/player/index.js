@@ -1,8 +1,22 @@
 import React, { memo } from "react";
-import { PlayerWrapper } from "./style";
+import { PlayerWrapper, PlayerLeft, PlayerRight } from "./style";
 
 const Player = memo(() => {
-	return <PlayerWrapper>Player</PlayerWrapper>;
+	return (
+		<PlayerWrapper>
+			<div className="content wrap-v2">
+				<PlayerLeft>
+					<h2>PlayerInfo</h2>
+					<h2>SongContent</h2>
+				</PlayerLeft>
+				<PlayerRight>
+					<h2>SimiPlaylist</h2>
+					<h2>SimiSong</h2>
+					<h2>Download</h2>
+				</PlayerRight>
+			</div>
+		</PlayerWrapper>
+	);
 });
 
 export default Player;

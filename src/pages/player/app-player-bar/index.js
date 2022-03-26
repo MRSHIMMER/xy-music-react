@@ -1,10 +1,13 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getSizeImage, formatDate, getPlaySong } from "@/utils/format-utils";
+import store from "@/store";
 
+import { getSizeImage, formatDate, getPlaySong } from "@/utils/format-utils";
 import { fetchPlayer, selectCurrentSong } from "./playerSlice";
+
 import { Slider } from "antd";
+import { NavLink } from "react-router-dom";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 
 const AppPlayerBar = memo(() => {
@@ -21,11 +24,21 @@ const AppPlayerBar = memo(() => {
 
 	const audioRef = useRef();
 	useEffect(() => {
-		if (currentSongStatus === "idle") dispatch(fetchPlayer());
+		if (currentSongStatus === "idle") dispatch(fetchPlayer(1901371647));
 	}, [currentSongStatus, dispatch]);
 	useEffect(() => {
 		audioRef.current.src = getPlaySong(currentSong.id);
 	}, [currentSong]);
+
+	const playList = store.getState().player.playList;
+	const songIndex = playList.findIndex((song) => song.id === 1901371647);
+	console.log(playList);
+	console.log(songIndex);
+
+	// if (songIndex !== -1) {
+	// 	dispatch(changeCurrentSongIndex(10));
+	// 	console.log(store.getState().player.currentSongIndex);
+	// }
 
 	// 赋值技巧
 	const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
@@ -77,14 +90,17 @@ const AppPlayerBar = memo(() => {
 			<div className="content wrap-v2">
 				<Control isPlaying={isPlaying}>
 					<button className="sprite_player prev"></button>
-					<button className="sprite_player play" onClick={(e) => playMusic()}></button>
+					<button
+						className="sprite_player play"
+						onClick={(e) => playMusic()}
+					></button>
 					<button className="sprite_player next"></button>
 				</Control>
 				<PlayInfo>
 					<div className="image">
-						<a href="/#">
+						<NavLink to="/discover/player">
 							<img src={getSizeImage(picUrl, 35)} alt="" />
-						</a>
+						</NavLink>
 					</div>
 					<div className="info">
 						<div className="song">
