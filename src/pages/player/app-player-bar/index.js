@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import store from "@/store";
 
 import { getSizeImage, formatDate, getPlaySong } from "@/utils/format-utils";
-import { fetchPlayer, selectCurrentSong } from "./playerSlice";
+import { fetchSong, selectCurrentSong } from "./playerSlice";
 
 import { Slider } from "antd";
 import { NavLink } from "react-router-dom";
@@ -21,19 +21,19 @@ const AppPlayerBar = memo(() => {
 	const currentSongStatus = useSelector((state) => state.player.status);
 
 	// console.log(currentSong);
+	// const playList = store.getState().player.playList;
+	// const songIndex = playList.findIndex((song) => song.id === 1901371647);
 
 	const audioRef = useRef();
 	useEffect(() => {
-		if (currentSongStatus === "idle") dispatch(fetchPlayer(1901371647));
+		if (currentSongStatus === "idle") dispatch(fetchSong(1901371647));
 	}, [currentSongStatus, dispatch]);
 	useEffect(() => {
 		audioRef.current.src = getPlaySong(currentSong.id);
 	}, [currentSong]);
 
-	const playList = store.getState().player.playList;
-	const songIndex = playList.findIndex((song) => song.id === 1901371647);
-	console.log(playList);
-	console.log(songIndex);
+	// console.log(playList);
+	// console.log(songIndex);
 
 	// if (songIndex !== -1) {
 	// 	dispatch(changeCurrentSongIndex(10));
