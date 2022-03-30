@@ -2,7 +2,11 @@ import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getSizeImage, formatDate, getPlaySong } from "@/utils/format-utils";
-import { selectCurrentSong, getSongDetailThunk } from "./playerSlice";
+import {
+	selectCurrentSong,
+	getSongDetailThunk,
+	changeSequence,
+} from "./playerSlice";
 
 import { Slider } from "antd";
 import { NavLink } from "react-router-dom";
@@ -16,6 +20,7 @@ const AppPlayerBar = memo(() => {
 
 	const dispatch = useDispatch();
 	const currentSong = useSelector(selectCurrentSong);
+	const sequence = useSelector((state) => state.player.playerSequence);
 	// const currentSongStatus = useSelector((state) => state.player.status);
 
 	const audioRef = useRef();
@@ -52,6 +57,11 @@ const AppPlayerBar = memo(() => {
 			setProgress((currentTime / duration) * 100);
 			setCurrentTime(e.target.currentTime * 1000);
 		}
+	};
+
+	const changePlayerSequence = () => {
+		let currentSequence = (sequence + 1) % 3;
+		dispatch(changeSequence(currentSequence));
 	};
 
 	//当回调函数传到自定义组件时，使用useCallback优化
@@ -118,14 +128,17 @@ const AppPlayerBar = memo(() => {
 						</div>
 					</div>
 				</PlayInfo>
-				<Operator>
+				<Operator sequence={sequence}>
 					<div className="left">
 						<button className="sprite_player btn favor"></button>
 						<button className="sprite_player btn share"></button>
 					</div>
 					<div className="right sprite_player">
 						<button className="sprite_player btn volume"></button>
-						<button className="sprite_player btn loop"></button>
+						<button
+							className="sprite_player btn loop"
+							onClick={(e) => changePlayerSequence()}
+						></button>
 						<button className="sprite_player btn playlist"></button>
 					</div>
 				</Operator>

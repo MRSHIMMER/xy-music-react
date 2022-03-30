@@ -7,6 +7,7 @@ const initialState = {
 	currentSong: {},
 	playList: [],
 	status: "idle",
+	playerSequence: 0, //0 循环 1 随机 2 单曲循环
 };
 
 export const getSongDetailThunk = (ids) => {
@@ -43,6 +44,7 @@ export const getSongDetailThunk = (ids) => {
 };
 
 export const fetchSong = createAsyncThunk("player/fetchSong", async (ids) => {
+	// 这个payload creator回调函数一定要返回promise，改用普通的thunk
 	const response = await getSongDetail(ids);
 	return response.songs[0];
 });
@@ -60,6 +62,9 @@ const playerSlice = createSlice({
 		changePlayList(state, action) {
 			state.playList = action.payload;
 		},
+		changeSequence(state, action) {
+			state.playerSequence = action.payload;
+		},
 	},
 	extraReducers: {
 		[fetchSong.pending]: (state, action) => {
@@ -75,7 +80,11 @@ const playerSlice = createSlice({
 	},
 });
 
-export const { changeCurrentSong, changeCurrentSongIndex, changePlayList } =
-	playerSlice.actions;
+export const {
+	changeCurrentSong,
+	changeCurrentSongIndex,
+	changePlayList,
+	changeSequence,
+} = playerSlice.actions;
 export default playerSlice.reducer;
 export const selectCurrentSong = (state) => state.player.currentSong;
