@@ -1,10 +1,8 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import store from "@/store";
-
 import { getSizeImage, formatDate, getPlaySong } from "@/utils/format-utils";
-import { fetchSong, selectCurrentSong } from "./playerSlice";
+import { selectCurrentSong, getSongDetailThunk } from "./playerSlice";
 
 import { Slider } from "antd";
 import { NavLink } from "react-router-dom";
@@ -18,32 +16,28 @@ const AppPlayerBar = memo(() => {
 
 	const dispatch = useDispatch();
 	const currentSong = useSelector(selectCurrentSong);
-	const currentSongStatus = useSelector((state) => state.player.status);
-
-	// console.log(currentSong);
-	// const playList = store.getState().player.playList;
-	// const songIndex = playList.findIndex((song) => song.id === 1901371647);
+	// const currentSongStatus = useSelector((state) => state.player.status);
 
 	const audioRef = useRef();
+
+	// 使用createAsyncThunk构造的Thunk函数
+	// useEffect(() => {
+	// 	if (currentSongStatus === "idle") dispatch(fetchSong(1901371647));
+	// }, [currentSongStatus, dispatch]);
+
 	useEffect(() => {
-		if (currentSongStatus === "idle") dispatch(fetchSong(1901371647));
-	}, [currentSongStatus, dispatch]);
+		dispatch(getSongDetailThunk(1901371647));
+	}, [dispatch]);
 	useEffect(() => {
 		audioRef.current.src = getPlaySong(currentSong.id);
 	}, [currentSong]);
 
-	// console.log(playList);
-	// console.log(songIndex);
-
-	// if (songIndex !== -1) {
-	// 	dispatch(changeCurrentSongIndex(10));
-	// 	console.log(store.getState().player.currentSongIndex);
-	// }
-
 	// 赋值技巧
-	const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
-	const singerName = (currentSong.ar && currentSong.ar[0].name) || "未知歌手";
-	const duration = currentSong.dt || 0;
+	// const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
+	const picUrl = (currentSong && currentSong.al && currentSong.al.picUrl) || "";
+	const singerName =
+		(currentSong && currentSong.ar && currentSong.ar[0].name) || "未知歌手";
+	const duration = (currentSong && currentSong.dt) || 0;
 	const showDuration = formatDate(duration, "mm:ss");
 	const showCurrentTime = formatDate(currentTime, "mm:ss");
 
