@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { getSongDetail } from "@/services/player";
+import { getRandomNumber } from "@/utils/math-utils";
 
 const initialState = {
 	currentSongIndex: 0,
@@ -40,6 +41,34 @@ export const getSongDetailThunk = (ids) => {
 				dispatch(changeCurrentSong(song));
 			});
 		}
+	};
+};
+
+export const changeSongThunk = (tag) => {
+	return (dispatch, getState) => {
+		const playList = getState().player.playList;
+		const sequnce = getState().player.playerSequence;
+		let currentSongIndex = getState().player.currentSongIndex;
+		switch (sequnce) {
+			case 1: //随机播放
+				let randomIndex = getRandomNumber(playList.length);
+				while (currentSongIndex === randomIndex) {
+					randomIndex = getRandomNumber(playList.length);
+				}
+				currentSongIndex = randomIndex;
+				break;
+			default: //顺序播放或单曲循环
+				// currentSongIndex += tag;
+				// if (currentSongIndex >= playList.length) currentSongIndex = 0;
+				// if (currentSongIndex < 0) currentSongIndex = playList.length - 1;
+				currentSongIndex =
+					currentSongIndex + tag < 0
+						? playList.length - 1
+						: (currentSongIndex + tag) % playList.length;
+		}
+		const currentSong = playList[currentSongIndex];
+		dispatch(changeCurrentSong(currentSong));
+		dispatch(changeCurrentSongIndex(currentSongIndex));
 	};
 };
 

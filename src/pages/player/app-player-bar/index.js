@@ -6,6 +6,7 @@ import {
 	selectCurrentSong,
 	getSongDetailThunk,
 	changeSequence,
+	changeSongThunk,
 } from "./playerSlice";
 
 import { Slider } from "antd";
@@ -35,6 +36,14 @@ const AppPlayerBar = memo(() => {
 	}, [dispatch]);
 	useEffect(() => {
 		audioRef.current.src = getPlaySong(currentSong.id);
+		audioRef.current
+			.play()
+			.then((res) => {
+				setIsPlaying(true);
+			})
+			.catch((err) => {
+				setIsPlaying(false);
+			});
 	}, [currentSong]);
 
 	// 赋值技巧
@@ -50,6 +59,10 @@ const AppPlayerBar = memo(() => {
 		isPlaying ? audioRef.current.pause() : audioRef.current.play();
 		setIsPlaying(!isPlaying);
 	}, [isPlaying]);
+
+	const changeMusic = (tag) => {
+		dispatch(changeSongThunk(tag));
+	};
 
 	const timeUpdate = (e) => {
 		// setCurrentTime(e.target.currentTime * 1000);
@@ -93,12 +106,18 @@ const AppPlayerBar = memo(() => {
 		<PlaybarWrapper className="sprite_player">
 			<div className="content wrap-v2">
 				<Control isPlaying={isPlaying}>
-					<button className="sprite_player prev"></button>
+					<button
+						className="sprite_player prev"
+						onClick={(e) => changeMusic(-1)}
+					></button>
 					<button
 						className="sprite_player play"
 						onClick={(e) => playMusic()}
 					></button>
-					<button className="sprite_player next"></button>
+					<button
+						className="sprite_player next"
+						onClick={(e) => changeMusic(1)}
+					></button>
 				</Control>
 				<PlayInfo>
 					<div className="image">
