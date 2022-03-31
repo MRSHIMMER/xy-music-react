@@ -7,6 +7,7 @@ import {
 	getSongDetailThunk,
 	changeSequence,
 	changeSongThunk,
+	changeCurrentLyricIndex,
 } from "./playerSlice";
 
 import { Slider } from "antd";
@@ -21,7 +22,11 @@ const AppPlayerBar = memo(() => {
 
 	const dispatch = useDispatch();
 	const currentSong = useSelector(selectCurrentSong);
-	const sequence = useSelector((state) => state.player.playerSequence);
+	const { sequence, lyricItems, currentLyricIndex } = useSelector((state) => ({
+		sequence: state.player.playerSequence,
+		lyricItems: state.player.lyricList,
+		currentLyricIndex: state.player.currentLyricIndex,
+	}));
 	// const currentSongStatus = useSelector((state) => state.player.status);
 
 	const audioRef = useRef();
@@ -65,10 +70,25 @@ const AppPlayerBar = memo(() => {
 	};
 
 	const timeUpdate = (e) => {
+		const currentTime = e.target.currentTime * 1000;
 		// setCurrentTime(e.target.currentTime * 1000);
 		if (!isChanging) {
 			setProgress((currentTime / duration) * 100);
 			setCurrentTime(e.target.currentTime * 1000);
+		}
+
+		//获取当前歌词
+		let i = 0;
+		for (; i < lyricItems.length; i++) {
+			let lyricItem = lyricItems[i];
+			if (currentTime < lyricItem.time) {
+				break;
+			}
+		}
+		if (currentLyricIndex !== i - 1) {
+			// 优化dispatch的频率
+			dispatch(changeCurrentLyricIndex(i - 1));
+			console.log(lyricItems[i - 1]);
 		}
 	};
 

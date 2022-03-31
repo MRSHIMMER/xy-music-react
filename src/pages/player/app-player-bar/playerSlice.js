@@ -55,6 +55,9 @@ export const changeSongThunk = (tag) => {
 		const playList = getState().player.playList;
 		const sequnce = getState().player.playerSequence;
 		let currentSongIndex = getState().player.currentSongIndex;
+
+		// debugger;
+
 		switch (sequnce) {
 			case 1: //随机播放
 				let randomIndex = getRandomNumber(playList.length);
@@ -114,6 +117,9 @@ const playerSlice = createSlice({
 		changeSequence(state, action) {
 			state.playerSequence = action.payload;
 		},
+		changeCurrentLyricIndex(state, action) {
+			state.currentLyricIndex = action.payload;
+		},
 	},
 	extraReducers: {
 		[fetchSong.pending]: (state, action) => {
@@ -137,6 +143,7 @@ export const {
 	changeCurrentSongIndex,
 	changePlayList,
 	changeSequence,
+	changeCurrentLyricIndex,
 } = playerSlice.actions;
 export default playerSlice.reducer;
 export const selectCurrentSong = (state) => state.player.currentSong;
