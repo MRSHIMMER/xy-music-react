@@ -10,7 +10,7 @@ import {
 	changeCurrentLyricIndex,
 } from "./playerSlice";
 
-import { Slider } from "antd";
+import { Slider, message } from "antd";
 import { NavLink } from "react-router-dom";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 
@@ -88,6 +88,13 @@ const AppPlayerBar = memo(() => {
 		if (currentLyricIndex !== i - 1) {
 			// 优化dispatch的频率
 			dispatch(changeCurrentLyricIndex(i - 1));
+			const content = lyricItems[i - 1] && lyricItems[i - 1].content;
+			message.open({
+				key: "lyric",
+				content: content,
+				duration: 0,
+				className: "lyric-class",
+			});
 			console.log(lyricItems[i - 1]);
 		}
 	};
