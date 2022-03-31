@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import store from "./store";
 import { Provider } from "react-redux";
@@ -31,6 +31,7 @@ ReactDOM.render(
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<App />}>
+					<Route index element={<Navigate to="discover" replace={true} />} />
 					<Route path="discover" element={<Discover />}>
 						<Route index element={<Recommend />} />
 						<Route path="ranking" element={<Ranking />} />
