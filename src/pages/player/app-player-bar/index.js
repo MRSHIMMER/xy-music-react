@@ -95,7 +95,7 @@ const AppPlayerBar = memo(() => {
 				duration: 0,
 				className: "lyric-class",
 			});
-			console.log(lyricItems[i - 1]);
+			// console.log(lyricItems[i - 1]);
 		}
 	};
 
