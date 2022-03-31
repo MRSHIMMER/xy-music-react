@@ -72,6 +72,16 @@ const AppPlayerBar = memo(() => {
 		}
 	};
 
+	const handleMusicEnded = () => {
+		if (sequence === 2) {
+			//单曲循环
+			audioRef.current.currentTime = 0;
+			audioRef.current.play();
+		} else {
+			dispatch(changeSongThunk(1));
+		}
+	};
+
 	const changePlayerSequence = () => {
 		let currentSequence = (sequence + 1) % 3;
 		dispatch(changeSequence(currentSequence));
@@ -162,7 +172,12 @@ const AppPlayerBar = memo(() => {
 					</div>
 				</Operator>
 			</div>
-			<audio ref={audioRef} src="" onTimeUpdate={timeUpdate} />
+			<audio
+				ref={audioRef}
+				src=""
+				onTimeUpdate={timeUpdate}
+				onEnded={handleMusicEnded}
+			/>
 		</PlaybarWrapper>
 	);
 });
