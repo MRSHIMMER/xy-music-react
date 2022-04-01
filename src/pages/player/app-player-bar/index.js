@@ -22,9 +22,10 @@ const AppPlayerBar = memo(() => {
 
 	const dispatch = useDispatch();
 	const currentSong = useSelector(selectCurrentSong);
-	const { sequence, lyricItems } = useSelector((state) => ({
+	const { sequence, lyricItems, playList } = useSelector((state) => ({
 		sequence: state.player.playerSequence,
 		lyricItems: state.player.lyricList,
+		playList: state.player.playList,
 	}));
 	// const currentLyricIndex = useSelector((state) => state.player.currentLyricIndex);
 	// const currentSongStatus = useSelector((state) => state.player.status);
@@ -112,7 +113,7 @@ const AppPlayerBar = memo(() => {
 	};
 
 	const handleMusicEnded = () => {
-		if (sequence === 2) {
+		if (sequence === 2 || playList.length === 1) {
 			//单曲循环
 			audioRef.current.currentTime = 0;
 			audioRef.current.play();
