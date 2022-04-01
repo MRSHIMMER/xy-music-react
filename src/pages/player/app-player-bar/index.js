@@ -7,7 +7,6 @@ import {
 	getSongDetailThunk,
 	changeSequence,
 	changeSongThunk,
-	changeCurrentLyricIndex,
 } from "./playerSlice";
 
 import { Slider, message } from "antd";
@@ -19,14 +18,15 @@ const AppPlayerBar = memo(() => {
 	const [progress, setProgress] = useState(0);
 	const [isChanging, setIsChanging] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [lyricIndex, setLyricIndex] = useState(0);
 
 	const dispatch = useDispatch();
 	const currentSong = useSelector(selectCurrentSong);
-	const { sequence, lyricItems, currentLyricIndex } = useSelector((state) => ({
+	const { sequence, lyricItems } = useSelector((state) => ({
 		sequence: state.player.playerSequence,
 		lyricItems: state.player.lyricList,
-		currentLyricIndex: state.player.currentLyricIndex,
 	}));
+	// const currentLyricIndex = useSelector((state) => state.player.currentLyricIndex);
 	// const currentSongStatus = useSelector((state) => state.player.status);
 
 	const audioRef = useRef();
@@ -69,6 +69,7 @@ const AppPlayerBar = memo(() => {
 		dispatch(changeSongThunk(tag));
 	};
 
+	// audio播放时间变化时的处理
 	const timeUpdate = (e) => {
 		const currentTime = e.target.currentTime * 1000;
 		// setCurrentTime(e.target.currentTime * 1000);
@@ -80,23 +81,34 @@ const AppPlayerBar = memo(() => {
 		//获取当前歌词
 		let i = 0;
 		for (; i < lyricItems.length; i++) {
-			let lyricItem = lyricItems[i];
-			if (currentTime < lyricItem.time) {
+			if (currentTime < lyricItems[i].time) {
 				break;
 			}
 		}
-		if (currentLyricIndex !== i - 1) {
-			// 优化dispatch的频率
-			dispatch(changeCurrentLyricIndex(i - 1));
-			const content = lyricItems[i - 1] && lyricItems[i - 1].content;
+		if (lyricIndex !== i) {
+			setLyricIndex(i);
+			const content = lyricItems[lyricIndex] && lyricItems[lyricIndex].content;
 			message.open({
 				key: "lyric",
 				content: content,
 				duration: 0,
 				className: "lyric-class",
 			});
-			// console.log(lyricItems[i - 1]);
+			// console.log(lyricItems[lyricIndex]);
 		}
+		// 优化redux，不使用redux来存储currentLyricIndex
+		// if (currentLyricIndex !== i - 1) {
+		// 	// 优化dispatch的频率
+		// 	dispatch(changeCurrentLyricIndex(i - 1));
+		// 	const content = lyricItems[i - 1] && lyricItems[i - 1].content;
+		// 	message.open({
+		// 		key: "lyric",
+		// 		content: content,
+		// 		duration: 0,
+		// 		className: "lyric-class",
+		// 	});
+		// 	// console.log(lyricItems[i - 1]);
+		// }
 	};
 
 	const handleMusicEnded = () => {
@@ -147,14 +159,8 @@ const AppPlayerBar = memo(() => {
 						className="sprite_player prev"
 						onClick={(e) => changeMusic(-1)}
 					></button>
-					<button
-						className="sprite_player play"
-						onClick={(e) => playMusic()}
-					></button>
-					<button
-						className="sprite_player next"
-						onClick={(e) => changeMusic(1)}
-					></button>
+					<button className="sprite_player play" onClick={(e) => playMusic()}></button>
+					<button className="sprite_player next" onClick={(e) => changeMusic(1)}></button>
 				</Control>
 				<PlayInfo>
 					<div className="image">
@@ -199,12 +205,7 @@ const AppPlayerBar = memo(() => {
 					</div>
 				</Operator>
 			</div>
-			<audio
-				ref={audioRef}
-				src=""
-				onTimeUpdate={timeUpdate}
-				onEnded={handleMusicEnded}
-			/>
+			<audio ref={audioRef} src="" onTimeUpdate={timeUpdate} onEnded={handleMusicEnded} />
 		</PlaybarWrapper>
 	);
 });

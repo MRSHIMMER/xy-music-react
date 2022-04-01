@@ -90,16 +90,13 @@ export const fetchSong = createAsyncThunk("player/fetchSong", async (ids) => {
 	return response.songs[0];
 });
 
-export const fetchLyric = createAsyncThunk(
-	"player/fetchLyric",
-	async (id, object) => {
-		const response = await getLyric(id);
-		const lyric = parseLyric(response.lrc.lyric);
-		return lyric;
-		// response.lrc.lyric = parseLyric(response.lrc.lyric);
-		// return response.lrc.lyric;
-	}
-);
+export const fetchLyric = createAsyncThunk("player/fetchLyric", async (id, object) => {
+	const response = await getLyric(id);
+	const lyric = parseLyric(response.lrc.lyric);
+	return lyric;
+	// response.lrc.lyric = parseLyric(response.lrc.lyric);
+	// return response.lrc.lyric;
+});
 
 const playerSlice = createSlice({
 	name: "player",
